@@ -1,0 +1,5 @@
+/home/ben/c/KMEANS/static/CMakeFiles/edit_cache.dir
+/home/ben/c/KMEANS/static/CMakeFiles/test.dir
+/home/ben/c/KMEANS/static/CMakeFiles/rebuild_cache.dir
+/home/ben/c/KMEANS/static/CMakeFiles/LoadData.dir
+/home/ben/c/KMEANS/static/CMakeFiles/DataStructs.dir

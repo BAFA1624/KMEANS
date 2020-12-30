@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ben/c/KMEANS/shared/DataStructs.h
+stdlib.h
+-
+
+/home/ben/c/KMEANS/shared/LoadData.h
+stdio.h
+/home/ben/c/KMEANS/shared/stdio.h
+stdlib.h
+/home/ben/c/KMEANS/shared/stdlib.h
+DataStructs.h
+/home/ben/c/KMEANS/shared/DataStructs.h
+
+/home/ben/c/KMEANS/shared/test.c
+LoadData.h
+/home/ben/c/KMEANS/shared/LoadData.h
+
