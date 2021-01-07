@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "DataStructs2.h"
+#include "DataStructs.h"
 
 unsigned long FileSize(FILE* f) {
 
