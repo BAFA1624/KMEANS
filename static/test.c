@@ -4,6 +4,7 @@ int main() {
 
 	RawData* data = ParseFile("data.txt");
 	RowHolder* test = RawToRows(data);
+
 /*	
 	char* txt = data->txt;
 
@@ -13,11 +14,8 @@ int main() {
 	printf("\n%s\n", test);
 */
 
-	int i;
-	for (i = 0; i < 5; ++i) {
-		printf("\n%s\n", test->rows[i]);
-	}
 
 	delRawData(data);
+	delRowHolder(test);
 
 }

@@ -11,26 +11,21 @@ RowHolder* RawToRows(RawData* data) {
 
 	// Allocating space for rows according to data in RawData object.	
 	char** rows = (char**)malloc( sizeof(char*) * data->n_rows );
-	int i, idx_ini, idx_fin, length, j = 0;
-	unsigned long* lens = (unsigned long*)malloc( sizeof(unsigned long) * data->n_rows );
+	int i, j = 0, idx_ini = 0, idx_fin = 0, length = 0;
+	unsigned long* newlines = (unsigned long*)malloc( sizeof(unsigned long) * data->n_rows );
+	printf("\nnewlines size = %lu, data->sz = %lu\n", data->n_rows, data->sz);
 
-	for (i = 0; i < data->n_rows; ++i) {
-		
-		length = 1;
-		idx_ini = j;
-		while (data->txt[j++] != '\n') {
-			length++;
+	for (i = 0; i < data->sz; ++i) {
+		if ( data->txt[i] == '\n' ) {
+			newlines[j] = i;
+			printf("\n\tj = %d, newlines[j] = %d\n", j, i);
+			++j;
 		}
-		idx_fin = j;
-
-		rows[i] = ConcatArr(data->txt, i, j);
-		lens[i] = length;
-
 	}
-	
+
 	RowHolder* result;
-	result->n_rows = data->n_rows;
-	result->row_sizes = lens;
+	//result->n_rows = data->n_rows;
+	//result->row_sizes = lens;
 	result->rows = rows;
 
 	return result;
@@ -48,5 +43,11 @@ char* ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin) {
 	return result;
 }
 
+void clearBuffer(void** buffer, unsigned long sz) {
+	int i;
+	for (i = 0; i < sz; ++i) {
+		buffer[i] = NULL;
+	}
+}
 
 #endif
