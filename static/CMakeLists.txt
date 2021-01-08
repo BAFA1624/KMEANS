@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 project(KMEANS)
 
+add_compile_options(-Wall -Wextra -pedantic -O3)
+
 add_library(DataStructs STATIC DataStructs.h)
 
-add_library(LoadData STATIC LoadData.h)
+add_library(LoadData STATIC ParseFile.h ProcessFile.h)
 
 
 add_executable(
