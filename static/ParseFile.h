@@ -19,10 +19,12 @@ unsigned long FileSize(FILE* f) {
 
 }
 
-void* getBuffer(unsigned long long sz) {
+void* getBuffer(unsigned long sz) {
 
 	void* buffer = malloc(sz);
 	if (buffer == NULL) {fputs("Mem Alloc Err", stderr); exit(1);};
+	
+	return buffer;
 
 }
 
@@ -50,13 +52,13 @@ RawData* ParseFile(char* filename) {
 		result->sz = fread(result->txt, 1, fSize, file);
 		if (result->sz != fSize) {fputs("File read err", stderr); exit(3);};
 
-		int i, count = 0;
+		unsigned long i, count = 0;
 		for (i = 0; i < result->sz; ++i) {
 			if ( *(result->txt + i) == '\n' ) {
 				++count;
 			}
 		}
-		result->rows = count;
+		result->n_rows = count;
 
 		// Close file object
 		fclose(file);

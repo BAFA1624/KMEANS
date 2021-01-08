@@ -6,7 +6,7 @@
 typedef struct RawData {
 
 	unsigned long sz;
-	unsigned long rows;
+	unsigned long n_rows;
 	char* txt;
 
 } RawData;
@@ -29,8 +29,8 @@ void delRawData(RawData* d) {
 }
 
 void delRowHolder(RowHolder* r) {
-	int i, j;
-	for (i = r->n_rows - 1; i >= 0; --i) {
+	unsigned long i;
+	for (i = 0; i < r->n_rows; ++i) {
 		free(r->rows[i]);
 	}
 	free(r->rows);
