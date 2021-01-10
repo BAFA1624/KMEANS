@@ -30,7 +30,7 @@ int** RawToIntArray(RawData* data, char delimiter) {
 		unsigned long idx_ini = 0;
 		// Reiterate through the row, slice using ConcatArr, convert using atoi(). Re-using row_len to represent the initial index of the number (idx_ini in ConcatArr)
 		for (j = 0; j < rows->row_sizes[i]; ++j) {
-			if ( char_row[j] == delimiter ) {
+			if ( char_row[j] == delimiter || char_row[j] == '\0' ) {
 				int_row[row_len++] = atoi(ConcatArr(char_row, idx_ini, j - 1));
 				idx_ini = j + 1;
 			}
