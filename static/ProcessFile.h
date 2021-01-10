@@ -7,6 +7,48 @@
 RowHolder* RawToRows(RawData* data);
 char* ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin);
 
+int** RawToIntArray(RawData* data, char delimiter) {
+	
+	// Inefficient, but I know it works and is reasonably fast
+	RowHolder* rows = RawToRows(data);
+	int** result = (int**) malloc( sizeof(int*) * data->n_rows );
+	unsigned long i, j, row_len = 0, result_len = 0;
+
+	// Iterate through every row
+	for (i = 0; i < rows->n_rows; ++i) {
+		char* char_row = rows->rows[i];
+
+		// Iterate through every char in row, count delimiters to get total num
+	        for (j = 0; j < rows->row_sizes[i]; ++j) {
+			if ( char_row[j] == delimiter ) row_len++;
+		}
+
+		// Allocate mem for row
+		int* int_row = (int*) malloc( row_len * sizeof(int) );
+		row_len = 0;
+
+		unsigned long idx_ini = 0;
+		// Reiterate through the row, slice using ConcatArr, convert using atoi(). Re-using row_len to represent the initial index of the number (idx_ini in ConcatArr)
+		for (j = 0; j < rows->row_sizes[i]; ++j) {
+			if ( char_row[j] == delimiter ) {
+				int_row[row_len++] = atoi(ConcatArr(char_row, idx_ini, j - 1));
+				idx_ini = j + 1;
+			}
+		}
+
+		// Assign the new int array to the result array
+		result[result_len++] = int_row;
+
+	}
+
+	return result;
+
+}
+
+int** RowToIntArray(RowHolder* data, char delimiter) {
+
+}
+
 RowHolder* RawToRows(RawData* data) {
 
 	// Allocating space for rows according to data in RawData object.	
@@ -22,6 +64,7 @@ RowHolder* RawToRows(RawData* data) {
 			rows[k++] = row;
 			
 			j = i+1;
+	
 		}
 		++i;
 	}
