@@ -3,11 +3,15 @@
 
 #include "ParseFile.h"
 #include "DataStructs.h"
+#include "ErrorHandle.h"
+
 
 RowHolder* RawToRows(RawData* data);
 char* ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin);
 
-int** RawToIntArray(RawData* data, char delimiter) {
+
+int**
+RawToIntArray(RawData* data, char delimiter) {
 	
 	// Inefficient, but I know it works and is reasonably fast
 	RowHolder* rows = RawToRows(data);
@@ -45,11 +49,10 @@ int** RawToIntArray(RawData* data, char delimiter) {
 
 }
 
-int** RowToIntArray(RowHolder* data, char delimiter) {
+// TODO: int** RowToIntArr
 
-}
-
-RowHolder* RawToRows(RawData* data) {
+RowHolder*
+RawToRows(RawData* data) {
 
 	// Allocating space for rows according to data in RawData object.	
 	char** rows = (char**)malloc( sizeof(char*) * data->n_rows );
@@ -78,7 +81,8 @@ RowHolder* RawToRows(RawData* data) {
 
 }
 
-char* ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin) {
+char*
+ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin) {
 	unsigned long i, len = idx_fin - idx_ini + 2;
 	char* result = (char*)malloc(len * sizeof(char));
 	result[len-1] = '\0';
@@ -89,11 +93,68 @@ char* ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin) {
 	return result;
 }
 
-void clearBuffer(void** buffer, unsigned long sz) {
+void
+clearBuffer(void** buffer, unsigned long sz) {
 	unsigned long i;
 	for (i = 0; i < sz; ++i) {
 		buffer[i] = NULL;
 	}
+}
+
+// Returns void for the sake of testing. Will return Table* in completed version
+void
+FileToTable(char* filename, int skip_top_rows, int skip_bottom_rows) {
+	
+	// Load in RawData of file
+	RawData* data = ParseFile(filename);
+	RowHolder* rows = RawToRows(data);
+	Table* result = (Table*) malloc( sizeof(Table) );
+	
+	// Assign values we know to result
+	result -> n_samples = rows -> n_rows - skip_top_rows - skip_bottom_rows;
+
+	// Parsing header rows
+	char** headers;
+	unsigned long i, j, headers_len = 0, current_start_idx = 0;
+	
+	// Measure how many headers there are and allocate adequate space
+	for ( i = 0; i < rows -> row_sizes[skip_top_rows]; ++i ) {
+		if ( rows -> rows[skip_top_rows][i] == ' ' || rows -> rows[skip_top_rows][i] == '\0' ) headers_len++;
+	}
+	headers = (char**) malloc( headers_len * sizeof(char*) );
+	if (!headers) {fputs("<FileToTable> Failed to allocate memory for headers", stderr); exit(1);};
+	result->n_headers = headers_len;
+	headers_len = 0;
+
+	// Assign header values to headers, then add to result->headers
+	for ( i = 0; i < rows -> row_sizes[skip_top_rows]; ++i ) {
+		if ( rows -> rows[skip_top_rows][i] == ' ' || rows -> rows[skip_top_rows][i] == '\0' ) {
+			headers[headers_len++] = ConcatArr( rows -> rows[skip_top_rows], current_start_idx, i - 1 );
+			current_start_idx = i + 1;
+		}
+	}
+	result->headers = headers;
+
+	// Copy values into table
+	unsigned long values_len;
+	for ( i = 0 + skip_top_rows; i < rows -> n_rows - skip_bottom_rows; ++i ) {
+		// Scan row for number of values on current row
+		for ( j = 0; j < rows -> row_sizes[i]; ++j ) {
+			if ( rows -> rows[i][j] == ' ' || rows -> rows[i][j] == '\0' ) {
+				values_len++;
+			}
+			// catch in case of size mismatch
+			if ( values_len == headers_len ) {
+				void* values = (void*) malloc( values_len * sizeof(void) );
+				values_len = 0;
+			} else {
+				weak_err("<FileToTable> Size mismatch. n_headers = %lu, number of values measured in row = %lu");
+				values_len = headers_len;
+			}
+
+		}
+	}
+
 }
 
 #endif
