@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "ErrorHandle.h"
 #include "DataStructs.h"
 
 unsigned long FileSize(FILE* f) {
@@ -22,7 +23,7 @@ unsigned long FileSize(FILE* f) {
 void* getBuffer(unsigned long sz) {
 
 	void* buffer = malloc(sz);
-	if (buffer == NULL) {fputs("Mem Alloc Err", stderr); exit(1);};
+	if (buffer == NULL) {fputs("<getBuffer> Failed allocating file buffer", stderr); exit(1);};
 	
 	return buffer;
 
@@ -50,7 +51,7 @@ RawData* ParseFile(char* filename) {
 		
 		// Parse file and store in target
 		result->sz = fread(result->txt, 1, fSize, file);
-		if (result->sz != fSize) {fputs("File read err", stderr); exit(3);};
+		if (result->sz != fSize) {err_exit("<ParseFile> Size disparity: alloc mem vs measured sz", 1);};
 
 		unsigned long i, count = 0;
 		for (i = 0; i < result->sz; ++i) {
