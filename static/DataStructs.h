@@ -19,6 +19,14 @@ typedef struct RowHolder {
 	
 } RowHolder;
 
+typedef Table {
+
+	char** headers;
+	void** data;
+	unsigned long n_headers;
+	unsigned long n_samples;
+
+} Table;
 
 // Custom delete functions
 
@@ -38,10 +46,22 @@ void delRowHolder(RowHolder* r) {
 	free(r);
 }
 
+void delTable(Table* t) {
+	unsigned long i, j;
+	for (i = 0; i < t->n_headers; ++i) {
+		free(t->headers[i]);
+		for (j = 0; j < t->n_samples; ++j) {
+			free(t->data[i][j]);
+		}
+	}
+	free(t);
+}
 
 // Struct Specific Functions
 
-
+void PrintTable(Table* t) {
+// Still to implement	
+}
 
 
 #endif
