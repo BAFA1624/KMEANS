@@ -30,7 +30,7 @@ void* getBuffer(unsigned long sz) {
 }
 
 RawData* ParseFile(char* filename) {
-	FILE* file = fopen_s(filename, "r");
+	FILE* file = fopen(filename, "r");
 
 	// Open file or error out if opening fails.
 	if (file != NULL) {
@@ -59,7 +59,7 @@ RawData* ParseFile(char* filename) {
 				++count;
 			}
 		}
-		result->n_rows = count;
+		result->n_rows = ++count;
 
 		// Close file object
 		fclose(file);

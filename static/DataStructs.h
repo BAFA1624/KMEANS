@@ -19,7 +19,7 @@ typedef struct RowHolder {
 	
 } RowHolder;
 
-typedef Table {
+typedef struct Table {
 
 	char** headers;
 	void** data;
@@ -51,7 +51,7 @@ void delTable(Table* t) {
 	for (i = 0; i < t->n_headers; ++i) {
 		free(t->headers[i]);
 		for (j = 0; j < t->n_samples; ++j) {
-			free(t->data[i][j]);
+			free(t->data[i]);
 		}
 	}
 	free(t);
@@ -59,9 +59,10 @@ void delTable(Table* t) {
 
 // Struct Specific Functions
 
+/*
 void PrintTable(Table* t) {
 // Still to implement	
 }
-
+*/
 
 #endif

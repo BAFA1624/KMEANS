@@ -16,5 +16,5 @@ set_target_properties(DataStructs PROPERTIES LINKER_LANGUAGE C)
 set_target_properties(ErrorHandle PROPERTIES LINKER_LANGUAGE C)
 set_target_properties(LoadData PROPERTIES LINKER_LANGUAGE C)
 
-target_link_libraries(test DataStructs LoadData)
+target_link_libraries(test DataStructs LoadData ErrorHandle)
 
