@@ -27,7 +27,7 @@ void* getBuffer(unsigned long long sz) {
 }
 
 RawData* ParseFile(char* filename) {
-	FILE* file = fopen(filename, "r");
+	FILE* file = fopen_s(filename, "r");
 
 	// Open file or error out if opening fails.
 	if (file != NULL) {

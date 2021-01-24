@@ -6,8 +6,12 @@
 #include "ErrorHandle.h"
 
 
+int** RawToIntArray(RawData* data, char delimiter);
+int** FileToIntArray(RawData* data, char delimiter);
 RowHolder* RawToRows(RawData* data);
 char* ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin);
+void clearBuffer(void** buffer, unsigned long sz);
+Table* FileToTable(char* filename, int skip_top_rows, int skip_bottom_rows);
 
 
 int**
@@ -49,7 +53,14 @@ RawToIntArray(RawData* data, char delimiter) {
 
 }
 
-// TODO: int** RowToIntArr
+int**
+FileToIntArray(char[] filename, char delimiter) {
+
+    RawData* data = ParseFile(filename);
+    int** result = RawToIntArray(data, delimiter);
+    return result;
+
+}
 
 RowHolder*
 RawToRows(RawData* data) {
@@ -82,7 +93,7 @@ RawToRows(RawData* data) {
 }
 
 char*
-ConcatArr(char* arr, unsigned long idx_ini, unsigned long idx_fin) {
+ConcatArr(char[] arr, unsigned long idx_ini, unsigned long idx_fin) {
 	unsigned long i, len = idx_fin - idx_ini + 2;
 	char* result = (char*)malloc(len * sizeof(char));
 	result[len-1] = '\0';
@@ -102,8 +113,8 @@ clearBuffer(void** buffer, unsigned long sz) {
 }
 
 // Returns void for the sake of testing. Will return Table* in completed version
-void
-FileToTable(char* filename, int skip_top_rows, int skip_bottom_rows) {
+table*
+FileToTable(char[] filename, int skip_top_rows, int skip_bottom_rows) {
 	
 	// Load in RawData of file
 	RawData* data = ParseFile(filename);
@@ -155,6 +166,10 @@ FileToTable(char* filename, int skip_top_rows, int skip_bottom_rows) {
 		}
 	}
 
+	return result;
+
 }
 
 #endif
+
+

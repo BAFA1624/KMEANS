@@ -7,7 +7,6 @@ add_library(DataStructs STATIC DataStructs.h)
 add_library(ErrorHandle STATIC ErrorHandle.h)
 add_library(LoadData STATIC ParseFile.h ProcessFile.h)
 
-
 add_executable(
 	test
 	test.c
